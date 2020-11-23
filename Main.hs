@@ -6,5 +6,6 @@ import TileMapGen
 main :: IO ()
 main = do
     g <- newStdGen
-    let m = generate $ noiseMap (g,perl g) (50,100)
-    display m
+    let dim = (50,100)
+    let ms = noiseMap (g,ridge g) dim
+    display $ generate ms
