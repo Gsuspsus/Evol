@@ -1,31 +1,32 @@
 module Front 
 (
-    display
+  display
 )
 where
 
 import System.Console.ANSI
-import Control.Monad
+import Control.Monad ()
+import Tiles
 
-display :: [[Double]] -> IO ()
+display :: TileMap -> IO ()
 display m = do
     clearScreen
     setCursorPosition 0 0
-    printMap $ m
+    printMap m
     setSGR [Reset]
 
 
+printMap :: TileMap -> IO ()
+printMap = mapM_ ((>> putStrLn "") . printStrip) 
 
-printMap :: [[Double]] -> IO ()
-printMap = mapM_ ((>> putStrLn "") . printRow) 
+printStrip :: Strip -> IO ()
+printStrip = mapM_ printTile
 
-printRow :: [Double] -> IO ()
-printRow = mapM_ printTile
-
-printTile :: Double -> IO ()
-printTile t = if t < 0 then do
-                setSGR [SetColor Foreground Vivid Blue]
-                putStr "~" 
-              else do
-                setSGR [SetColor Foreground Dull Green] 
-                putStr "#"
+printTile :: Tile -> IO ()
+printTile t = do 
+                if t == Water then 
+                  setSGR [SetColor Foreground Vivid Blue]
+                else 
+                  setSGR [SetColor Foreground Dull Green] 
+                
+                putStr $ show t
