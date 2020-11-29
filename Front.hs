@@ -1,6 +1,7 @@
 module Front 
 (
-  display
+  display,
+  printMap
 )
 where
 
@@ -15,7 +16,6 @@ display m = do
     printMap m
     setSGR [Reset]
 
-
 printMap :: TileMap -> IO ()
 printMap = mapM_ ((>> putStrLn "") . printStrip) 
 
@@ -24,9 +24,8 @@ printStrip = mapM_ printTile
 
 printTile :: Tile -> IO ()
 printTile t = do 
-                if t == Water then 
-                  setSGR [SetColor Foreground Vivid Blue]
-                else 
-                  setSGR [SetColor Foreground Dull Green] 
-                
+                case t of  
+                  Water -> setSGR [SetColor Foreground Vivid Blue]
+                  Land -> setSGR [SetColor Foreground Dull Green]
+                  Empty -> setSGR [Reset]
                 putStr $ show t

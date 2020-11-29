@@ -1,16 +1,16 @@
 import System.Random
-import NoiseMapGen
 import Control.Monad
-import TileMapGen
+import Data.Maybe
+import Tiles
 import Front
+import WorldGen
 main :: IO ()
 main = do
     g <- newStdGen
     let dim = (50,100)
-    let ms = noiseMap (g,ridge g) dim
-    display $ generate ms
-    a <- getLine
+    let world = generateWorld g [Land,Water] dim
     forever $ do
-        let ms = noiseMap (g,ridge g) dim
-        display $ generate ms
+        let layer = getLayer world Water
+        display (snd $ fromJust layer)
+        getLine
         main

@@ -1,10 +1,10 @@
 module NoiseMapGen 
 (
     NoiseMap,
+    Dimension,
     noiseMap,
     perl,
     ridge,
-    (<%>)
 )
 where
 
@@ -48,11 +48,3 @@ noiseRow ng dim c r = if c >= snd dim then [] else v : noiseRow ng' dim (c+1) r
                         
 noiseMap :: (Noise a) => (StdGen,a) -> Dimension -> NoiseMap
 noiseMap ng dim = [ noiseRow ng dim 0 y | y <- [0..fst dim] ]
-
-overlay :: NoiseMap -> NoiseMap -> NoiseMap
-overlay = zipWith addStrips 
-    where 
-        addStrips r1 r2 = map (uncurry (/)) $ zip r1 r2
-
-(<%>) :: NoiseMap -> NoiseMap -> NoiseMap
-(<%>) = overlay 
