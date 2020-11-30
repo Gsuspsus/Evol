@@ -25,7 +25,7 @@ perl g = perlin seed octave scale persistence
     where 
         seed = fst (random g)
         octave = 2
-        scale = 0.025
+        scale = 0.05
         persistence = 0.2
 
 ridge :: StdGen -> Ridged
@@ -33,9 +33,9 @@ ridge g = ridged seed octave scale persistence lacunarity
     where 
         seed = fst (random g)
         octave = 3
-        scale = 0.01
-        persistence = 0.5
-        lacunarity = 2
+        scale = 0.5
+        persistence = 0.3
+        lacunarity = 0.5
 
 noiseAt :: (Noise a) => (StdGen, a) -> Point -> (Double, (StdGen,a))
 noiseAt ng p = (noiseValue (snd ng) p, ng')
