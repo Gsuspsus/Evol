@@ -33,9 +33,9 @@ ridge g = ridged seed octave scale persistence lacunarity
     where 
         seed = fst (random g)
         octave = 3
-        scale = 0.01
-        persistence = 0.5
-        lacunarity = 2
+        scale = 0.1
+        persistence = 1.5
+        lacunarity = 0.5
 
 noiseAt :: (Noise a) => (StdGen, a) -> Point -> (Double, (StdGen,a))
 noiseAt ng p = (noiseValue (snd ng) p, ng')
