@@ -8,9 +8,8 @@ main :: IO ()
 main = do
     g <- newStdGen
     let dim = (50,100)
-    let world = generateWorld g [Land,Water] dim
+    let world = generateWorld g [Land,Land] dim
     forever $ do
-        let layer = getLayer world Water
-        display (snd $ fromJust layer)
+        display $ worldMap world
         getLine
         main

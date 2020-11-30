@@ -1,18 +1,18 @@
 module WorldGen where
 
 import System.Random
-import Data.Foldable
-import Layer
 import Tiles
+import TileMapGen
 import NoiseMapGen
 
-newtype World = World { getWorldLayers :: [Layer]} deriving (Show) 
+data World = World {
+    worldMap :: TileMap,
+    dimension :: (Double,Double)
+}
 
-generateWorld :: StdGen -> [LayerType] -> Dimension -> World
-generateWorld g types dim = World $ map (convertNoiseToLayer nm) types
-    where 
-        ng = (g,ridge g)
-        nm = noiseMap ng dim
-
-getLayer :: World -> LayerType -> Maybe Layer
-getLayer w t = find ((==t) . fst) $ getWorldLayers w
+generateWorld :: StdGen -> [Tile] -> (Double,Double) -> World
+generateWorld g tiles dim = World wm dim
+    where
+        wm = flatten tilemaps
+        tilemaps = map (uncurry generateTileMap) layers
+        layers = zip (noiseMaps (g,ridge g) dim (length tiles)) tiles

@@ -27,5 +27,6 @@ printTile t = do
                 case t of  
                   Water -> setSGR [SetColor Foreground Vivid Blue]
                   Land -> setSGR [SetColor Foreground Dull Green]
+                  Plant -> setSGR [SetColor Foreground Vivid Red]
                   Empty -> setSGR [Reset]
                 putStr $ show t

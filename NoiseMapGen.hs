@@ -3,6 +3,7 @@ module NoiseMapGen
     NoiseMap,
     Dimension,
     noiseMap,
+    noiseMaps,
     perl,
     ridge,
 )
@@ -32,9 +33,9 @@ ridge g = ridged seed octave scale persistence lacunarity
     where 
         seed = fst (random g)
         octave = 3
-        scale = 0.1
+        scale = 0.01
         persistence = 0.5
-        lacunarity = 3
+        lacunarity = 2
 
 noiseAt :: (Noise a) => (StdGen, a) -> Point -> (Double, (StdGen,a))
 noiseAt ng p = (noiseValue (snd ng) p, ng')
@@ -48,3 +49,8 @@ noiseRow ng dim c r = if c >= snd dim then [] else v : noiseRow ng' dim (c+1) r
                         
 noiseMap :: (Noise a) => (StdGen,a) -> Dimension -> NoiseMap
 noiseMap ng dim = [ noiseRow ng dim 0 y | y <- [0..fst dim] ]
+
+noiseMaps :: (Noise a) => (StdGen,a) -> Dimension -> Int -> [NoiseMap]
+noiseMaps _ _ 0 = []
+noiseMaps ng dim n = noiseMap ng dim : noiseMaps ng' dim (pred n)
+    where ng' = BF.first (snd . split) ng
