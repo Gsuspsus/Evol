@@ -9,7 +9,7 @@ import WorldGen
 
 main :: IO ()
 main = do
-  maybeSize <- getTermnalSize
+  maybeSize <- getTerminalSize
   let dim = bimap fromIntegral fromIntegral $ fromMaybe (80, 100) maybeSize
   forever $ do
     g <- newStdGen
